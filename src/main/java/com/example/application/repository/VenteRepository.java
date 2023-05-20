@@ -18,6 +18,9 @@ public interface VenteRepository extends JpaRepository<Vente , Integer> {
     List<Vente> findByDateVenteBetweenAll(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     @Query("SELECT v FROM Vente v WHERE v.agent = :agent")
     List<Vente> allVentes(@Param("agent") User agent);
+    @Query("SELECT COUNT(v) FROM Vente v WHERE lower(v.qualification) = lower(:qualification)")
+    Long countVentesByQualification(@Param("qualification") String qualification);
+
     Optional<Vente> findById(int id);
 
 

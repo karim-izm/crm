@@ -31,9 +31,12 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
         this.service = service;
         createHeader();
         createSideBar();
+        addClassName("mainLayout");
+
     }
 
     private void createHeader() {
+
         currentUser = (User) VaadinSession.getCurrent().getAttribute("user");
         H1 header = new H1("CRM STORACTIVE | ADMIN ");
         header.addClassNames(LumoUtility.FontSize.LARGE,
@@ -55,7 +58,9 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
     }
 
     private void createSideBar() {
+
             addToDrawer(new VerticalLayout(
+
                     new RouterLink("Dashboard", Dashboard.class),
                     new RouterLink("Agents", ListView.class),
                     new RouterLink("Ventes", VenteAdmin.class),
@@ -68,6 +73,7 @@ public class MainLayout extends AppLayout implements RouterLayout, BeforeEnterOb
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+
         currentUser = (User) VaadinSession.getCurrent().getAttribute("user");
         if (currentUser == null) {
             beforeEnterEvent.rerouteTo(Login.class);

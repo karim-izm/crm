@@ -3,14 +3,13 @@ package com.example.application.views.User;
 import com.example.application.models.User;
 import com.example.application.models.WorkTime;
 import com.example.application.service.ProdService;
-import com.example.application.service.UserService;
 import com.example.application.service.VenteService;
-import com.example.application.views.admin.dashboard.Dashboard;
 import com.example.application.views.layout.AgentLayout;
+import com.vaadin.collaborationengine.CollaborationMessageInput;
+import com.vaadin.collaborationengine.CollaborationMessageList;
+import com.vaadin.collaborationengine.UserInfo;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -18,14 +17,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import org.hibernate.jdbc.Work;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Timer;
-import java.util.TimerTask;
 
 @Route(value = "AgentDashboard" , layout = AgentLayout.class)
 
@@ -43,6 +39,7 @@ import java.util.TimerTask;
     private Button stopWorkButton;
     private Button pauseButton;
     private Button resumeButton;
+    private  final UserInfo userInfo;
 
     private LocalDateTime pauseStartTime;
 
@@ -51,6 +48,7 @@ import java.util.TimerTask;
             this.prodService = prodService;
             currentUser = (User) VaadinSession.getCurrent().getAttribute("user");
 
+            userInfo=new UserInfo(currentUser.getFullName(),currentUser.getFullName());
             startWorkButton = new Button("Start Working", e -> startWorking());
             stopWorkButton = new Button("Stop Working", e -> stopWorking());
             stopWorkButton.setEnabled(false);
@@ -65,9 +63,10 @@ import java.util.TimerTask;
             setPadding(true);
             setSpacing(true);
             setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+            HorizontalLayout hl = new HorizontalLayout( getChatLayout());
             add(
                     getHeader(),
-                    new H4("Bienvenue : "+currentUser.getFullName()),
+
                     new HorizontalLayout(
                             getVenteStats()
                     ),
@@ -75,9 +74,24 @@ import java.util.TimerTask;
                     stopWorkButton,
                     timerLabel,
                     pauseButton,
-                    resumeButton
+                    resumeButton,
+hl
             );
+
         }
+
+    private Component getChatLayout() {
+        var chatLayout=new VerticalLayout();
+
+        var messageList= new CollaborationMessageList(userInfo,"chat");
+        var messageInput = new CollaborationMessageInput(messageList);
+        chatLayout.add(new H2("chat"),messageList,messageInput);
+        chatLayout.expand(messageList);
+        chatLayout.setHeightFull();
+        chatLayout.setWidth(null);
+        chatLayout.addClassName("bg-contrast-5");
+        return chatLayout;
+    }
 
     private void startWorking() {
         workTime = prodService.startWorking(currentUser);

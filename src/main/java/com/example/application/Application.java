@@ -2,7 +2,7 @@ package com.example.application;
 
 import com.example.application.service.MyApplication;
 import com.vaadin.flow.component.page.AppShellConfigurator;
-import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +19,7 @@ import java.util.HashSet;
  *
  */
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@Push
 @Theme(variant = Lumo.LIGHT)
 public class Application implements AppShellConfigurator {
 

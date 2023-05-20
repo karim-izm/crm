@@ -3,7 +3,6 @@ package com.example.application.service;
 import com.example.application.models.User;
 import com.example.application.models.Vente;
 import com.example.application.repository.VenteRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -89,6 +88,18 @@ public class VenteService {
 
     public long countVentes(){
         return venteRepository.count();
+    }
+    public long countVentesAccepté(){
+        return  venteRepository.countVentesByQualification("Accepté");
+    }
+    public long countVentesEn_Attente(){
+        return  venteRepository.countVentesByQualification("En Attente");
+    }
+    public long countVentesEffectif(){
+        return  venteRepository.countVentesByQualification("Effectif");
+    }
+    public long countVentesKO(){
+        return  venteRepository.countVentesByQualification("KO");
     }
 
     public long countVentesByAgent(User agent){
