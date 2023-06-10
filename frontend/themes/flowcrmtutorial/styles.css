@@ -1,0 +1,11 @@
+a[highlight] {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.card {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    background-color: #ffffff;
+}
